@@ -2,18 +2,23 @@ import os, json
 from flask import Flask, render_template, request, redirect
 from dotenv import load_dotenv
 from cryptography.fernet import Fernet
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import base64
 
 load_dotenv()
 
 app = Flask(__name__, static_folder='static', template_folder='templates', static_url_path='/')
-key = os.environ['ENCRYPTION_KEY']
+key = os.environ.get('ENCRYPTION_KEY')
 
 if key is None:
     raise ValueError("ENCRYPTION_KEY environment variable is not set")
 
 fernet = Fernet(key)
+
+def getTimestamp():
+    dt = datetime.now(timezone.utc)
+    utc_time = dt.replace(tzinfo=timezone.utc)
+    return utc_time.timestamp()
 
 def encrypt(data):
     encrypted_bytes = fernet.encrypt(json.dumps(data).encode())
@@ -26,9 +31,21 @@ def decrypt(data):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        text = request.form['text']
-        salt = request.form['datetime']
-        encrypted = encrypt({"text": text, "timestamp": salt})
+        currentTimestamp = getTimestamp()
+        content = request.form['content']
+        timeNumber = float(request.form.get('timeNumber', 1))
+        timeUnit = request.form.get('timeUnit', 'weeks')
+        if timeUnit == 'years':
+            timeNumber = 365.25 * timeNumber
+            timeUnit = 'days'
+        timeDelta = timedelta(**{timeUnit: timeNumber})
+
+
+        encrypted = encrypt({
+            "content": content,
+            "createdAt": currentTimestamp,
+            "duration": timeDelta.total_seconds(),
+        })
         return redirect(f'/unlock?data={encrypted}')
     return render_template('index.html', now=datetime.now(), timedelta=timedelta)
 
@@ -36,10 +53,14 @@ def index():
 def decrypt_route():
     encrypted = request.args.get('data')
     data = decrypt(encrypted)
-    if datetime.now() < datetime.fromisoformat(data['timestamp']):
-        delta = datetime.fromisoformat(data['timestamp']) - datetime.now()
-        return f"Error: it's not time yet ({delta.total_seconds():.0f} seconds remaining)", 403
-    return f"{data['text']}, {data['timestamp']}"
+    unlockAt = data['createdAt'] + data['duration']
+    currentTimestamp = getTimestamp()
+    if currentTimestamp < unlockAt:
+        return f"Error: it's not time yet ({(unlockAt - currentTimestamp):.0f} seconds remaining)", 403
+    
+    createdDate = datetime.utcfromtimestamp(data['createdAt']).strftime("%b %d, %Y")
+    
+    return f"{data['content']} - Created at {createdDate}"
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -12,8 +12,15 @@
 <body>
     <h1>FuturePW</h1>
     <form method="post">
-        <input type="text" name="text" placeholder="Enter text to encrypt" required>
-        <input type="datetime-local" name="datetime" min="{{ now.strftime('%Y-%m-%dT%H:%M') }}" value="{{ (now + timedelta(days=7)).strftime('%Y-%m-%dT%H:%M') }}" required>
+        <input type="text" name="content" placeholder="Enter text to encrypt" required>
+        <input type="number" name="timeNumber" min="1" value="1" required>
+        <select name="timeUnit" value="weeks" required>
+            <option value="years">years</option>
+            <option value="weeks">weeks</option>
+            <option value="days">days</option>
+            <option value="hours">hours</option>
+            <option value="minutes">minutes</option>
+        </select>
         <input type="submit" value="Encrypt">
     </form>
     
