@@ -46,21 +46,25 @@ def index():
             "createdAt": currentTimestamp,
             "duration": timeDelta.total_seconds(),
         })
+
         return redirect(f'/unlock?data={encrypted}')
-    return render_template('index.html', now=datetime.now(), timedelta=timedelta)
+    return render_template('index.html', timedelta=timedelta, today=datetime.now().strftime("%b %d, %Y"))
 
 @app.route('/unlock')
 def decrypt_route():
     encrypted = request.args.get('data')
-    data = decrypt(encrypted)
+    try:
+        data = decrypt(encrypted)
+    except:
+        return "Error: invalid data", 400
     unlockAt = data['createdAt'] + data['duration']
     currentTimestamp = getTimestamp()
     if currentTimestamp < unlockAt:
-        return f"Error: it's not time yet ({(unlockAt - currentTimestamp):.0f} seconds remaining)", 403
+        return render_template('countdown.html', remainingSeconds=f"{(unlockAt - currentTimestamp):.0f}")
     
     createdDate = datetime.utcfromtimestamp(data['createdAt']).strftime("%b %d, %Y")
     
-    return f"{data['content']} - Created at {createdDate}"
+    return render_template('decrypt.html', createdAt=createdDate, content=data['content'])
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,31 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FuturePW</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
-    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
-</head>
-<body>
-    <h1>FuturePW</h1>
-    <form method="post">
-        <input type="text" name="content" placeholder="Enter text to encrypt" required>
-        <input type="number" name="timeNumber" min="1" value="1" required>
-        <select name="timeUnit" value="weeks" required>
-            <option value="years">years</option>
-            <option value="weeks">weeks</option>
-            <option value="days">days</option>
-            <option value="hours">hours</option>
-            <option value="minutes">minutes</option>
-        </select>
-        <input type="submit" value="Encrypt">
-    </form>
-    
-    <footer>
-        <p>Made with ❤️ by 🍞</p>
-    </footer>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <div id="paper">
+
+        <h1 style="font-size: 24px; display: inline; vertical-align: middle;">FuturePW</h1>
+        <img src="{{ url_for('static', filename='icon.svg') }}" alt="FuturePW" width="32" height="32" style="vertical-align: middle; color: var(--text-color); margin-left: -0.25em;">
+        <span style="float: right;">{{ today }}</span>
+
+        <textarea name="content" id="message" placeholder="Enter secrets that you want to forget now and send to your future self.
+Anything is allowed such as your SNS account password, lock key location, your iPhone's passcode, etc. 
+
+Your secrets will not be saved anywhere, Only you (and whoever has link) can read them." style="font: inherit; border: none;" required></textarea>
+        <p style="font-family: 'Alex Brush', cursive; font-size: 1.2em;">You - on {{ today }}</p>
+    </div>
+    <div id="controls">
+        <span style="font-size: 2em;">
+            Receiver: You<br>
+            <span style="display: inline-block;">Deliver in</span>
+            <div style="display: inline-block; white-space: nowrap;">
+                <input type="number" name="timeNumber" id="timeNumber" min="1" max="9999" value="1" required>
+                <select name="timeUnit" id="timeUnit" required>
+                    <option value="years">years</option>
+                    <option value="weeks" selected>weeks</option>
+                    <option value="days">days</option>
+                    <option value="hours">hours</option>
+                    <option value="minutes">minutes</option>
+                </select>
+            </div>
+        </span>
+        <input id="submit" type="submit" value="Send">
+    </div>
+</form>
+{% endblock %}

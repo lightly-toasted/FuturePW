@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<meta http-equiv="refresh" content="{{ remainingSeconds }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='countdown.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="container">
+    <h1>Arriving to your future self</h1>
+    <img src="{{ url_for('static', filename='flying.gif') }}" alt="✈️">
+    <p id="countdown"></p>
+</div>
+
+<script>
+    let remainingTime = parseInt(document.querySelector('meta[http-equiv="refresh"]').content);
+    const countdownElement = document.getElementById('countdown');
+    const display = (remainingTime) => {
+        const hours = Math.floor(remainingTime / 3600);
+        const minutes = Math.floor((remainingTime % 3600) / 60);
+        const seconds = remainingTime % 60;
+        countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    };
+    display(remainingTime);
+    setInterval(() => {
+        remainingTime -= 1;
+        display(remainingTime);
+    }, 1000);
+</script>
+{% endblock %}
