@@ -22,8 +22,11 @@
         countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
     display(remainingTime);
-    setInterval(() => {
+    const intervalId = setInterval(() => {
         remainingTime -= 1;
+        if (remainingTime <= 0) {
+            clearInterval(intervalId);
+        }
         display(remainingTime);
     }, 1000);
 </script>
