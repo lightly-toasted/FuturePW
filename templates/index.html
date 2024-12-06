@@ -7,7 +7,6 @@
 {% block content %}
 <form method="post">
     <div id="paper">
-
         <h1 style="font-size: 24px; display: inline; vertical-align: middle;">FuturePW</h1>
         <img src="{{ url_for('static', filename='icon.svg') }}" alt="FuturePW" width="32" height="32" style="vertical-align: middle; color: var(--text-color); margin-left: -0.25em;">
         <span style="float: right;">{{ today }}</span>
@@ -36,4 +35,55 @@ Your secrets will not be saved anywhere, Only you (and whoever has link) can rea
         <input id="submit" type="submit" value="Send">
     </div>
 </form>
+
+<script>
+    const paper = document.getElementById('paper');
+    const controls = document.getElementById('controls');
+    const submit = document.getElementById('submit');
+    
+    document.querySelector('form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+
+        submit.disabled = true;
+        controls.style.transform = "translateY(200%)";
+        controls.style.opacity = "0";
+        controls.style.pointerEvents = "none";
+        
+
+        paper.style.boxShadow = "none";
+        paper.style.webkitFilter = "drop-shadow(0 0 25px #000);"
+        paper.style.filter = "drop-shadow(0 0 25px #000);"
+        for (const child of paper.children) {
+            child.style.opacity = "0";
+            child.style.pointerEvents = "none";
+        }
+        for (const child of paper.children) {
+            child.style.opacity = "0";
+            child.style.pointerEvents = "none";
+        }
+        
+
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        paper.style.backgroundColor = "transparent";
+        paper.style.backgroundImage = "url('{{ url_for('static', filename='send.gif') }}')";
+        
+        await new Promise(resolve => setTimeout(resolve, 800));
+
+        paper.style.transform = `translate(200%, -200%)`;
+
+        await new Promise(resolve => setTimeout(resolve, 1100));
+
+        const formData = new FormData(this);
+        const response = await fetch('/', {
+            method: 'POST',
+            body: formData,
+        });
+        
+        if (response.redirected) {
+            window.location.href = response.url;
+        }
+    });
+</script>
 {% endblock %}

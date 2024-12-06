@@ -8,7 +8,10 @@
     max-width: 60vw;
     background: white;
     padding: 3em;
-    box-shadow: 0 0 50px 0 rgba(0,0,0,0.25);
+    filter: drop-shadow(0 0 25px rgba(0,0,0,0.25));
+    background-size: cover;
+    transition: all 0.5s ease,
+                transform 2s cubic-bezier(0.5, -0.5, 0.5, 1.5);
 }
 
 @media (min-width: 1000px) {
@@ -52,6 +55,9 @@
     gap: 1.5em;
     align-items: center;
     justify-content: center;
+    transition: transform 0.5s cubic-bezier(0.5, -0.5, 0.5, 1.5),
+                opacity 0.5s ease;
+
 }
 
 #controls > span {
