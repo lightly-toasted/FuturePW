@@ -60,7 +60,11 @@ def decrypt_route():
     unlockAt = data['createdAt'] + data['duration']
     currentTimestamp = getTimestamp()
     if currentTimestamp < unlockAt:
-        return render_template('countdown.html', remainingSeconds=f"{(unlockAt - currentTimestamp):.0f}")
+        remainingSeconds = round(unlockAt - currentTimestamp)
+        hours, remainder = divmod(remainingSeconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        countdownText = f"{hours:02}:{minutes:02}:{seconds:02}"
+        return render_template('countdown.html', remainingSeconds=remainingSeconds, countdownText=countdownText)
     
     createdDate = datetime.utcfromtimestamp(data['createdAt']).strftime("%b %d, %Y")
     
