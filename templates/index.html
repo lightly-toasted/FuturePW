@@ -48,24 +48,23 @@ Your secrets will not be saved anywhere, Only you (and whoever has link) can rea
         submit.disabled = true;
         controls.style.transform = "translateY(200%)";
         controls.style.opacity = "0";
+        paper.style.pointerEvents = "none";
         controls.style.pointerEvents = "none";
         
 
-        paper.style.boxShadow = "none";
-        paper.style.webkitFilter = "drop-shadow(0 0 25px #000);"
-        paper.style.filter = "drop-shadow(0 0 25px #000);"
         for (const child of paper.children) {
             child.style.opacity = "0";
-            child.style.pointerEvents = "none";
         }
         for (const child of paper.children) {
             child.style.opacity = "0";
-            child.style.pointerEvents = "none";
         }
         
 
         await new Promise(resolve => setTimeout(resolve, 500));
 
+        if (window.matchMedia("(max-width: 767px)").matches) {
+            paper.style.filter = "none";
+        }
         paper.style.backgroundColor = "transparent";
         paper.style.backgroundImage = "url('{{ url_for('static', filename='send.gif') }}')";
         

@@ -9,8 +9,17 @@
     background: white;
     padding: 3em;
     filter: drop-shadow(0 0 25px rgba(0,0,0,0.25));
-    background-size: cover;
+    -webkit-filter: drop-shadow(0 0 25px rgba(0,0,0,0.25));
+    background-size: 100% 100%;
     background-repeat: no-repeat;
+    background-position: center center;
+    mask-size: 100% 100%;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
     transition: all 0.5s ease,
                 transform 2s cubic-bezier(0.5, -0.5, 0.5, 1.5);
 }
