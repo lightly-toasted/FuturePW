@@ -47,7 +47,7 @@ def index():
             "duration": timeDelta.total_seconds(),
         })
 
-        return redirect(f'/unlock?data={encrypted}')
+        return redirect(f'/unlock?data={encrypted}', 303)
     return render_template('index.html', timedelta=timedelta, today=datetime.now().strftime("%b %d, %Y"))
 
 @app.route('/unlock')
