@@ -12,7 +12,7 @@ FuturePW is a web app that allows you to send password to your future self. It's
 > [!WARNING]  
 > Do not share your password link with anyone!
 
-1. Go to [FuturePW](https://futurepw.vercel.app/)
+1. Go to [FuturePW](https://futurepw.toast.name/)
 2. Enter your password and send. your password will not be saved anywhere, only you (and whoever has link) can read them.
 3. Scroll down and get your password link, so you can access your password later. You can get your password in that link when the countdown ends.
 
