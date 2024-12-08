@@ -1,9 +1,8 @@
-import os, json
+import os, json, base64, urllib.parse
 from flask import Flask, render_template, request, redirect
 from dotenv import load_dotenv
 from cryptography.fernet import Fernet
 from datetime import datetime, timedelta, timezone
-import base64
 
 load_dotenv()
 
@@ -65,7 +64,20 @@ def decrypt_route():
         minutes, seconds = divmod(remainder, 60)
         countdownText = f"{hours:02}:{minutes:02}:{seconds:02}"
         unlockAtISO = datetime.utcfromtimestamp(unlockAt).strftime('%Y%m%dT%H%M%SZ')
-        return render_template('countdown.html', remainingSeconds=remainingSeconds, countdownText=countdownText, iso=unlockAtISO, url=request.url)
+        ics_content = f"""BEGIN:VCALENDAR\r
+VERSION:2.0\r
+PRODID:-//FuturePW//NONSGML v1.0//EN\r
+BEGIN:VEVENT\r
+SUMMARY:FuturePW\r
+DTSTART;VALUE=DATE-TIME:{unlockAtISO}\r
+DTEND;VALUE=DATE-TIME:{unlockAtISO}\r
+LOCATION:{request.url}\r
+DESCRIPTION:FuturePW\r
+STATUS:CONFIRMED\r
+END:VEVENT\r
+END:VCALENDAR\r"""
+        return render_template('countdown.html', remainingSeconds=remainingSeconds, countdownText=countdownText, iso=unlockAtISO, url=request.url, ics_content=urllib.parse.quote_plus(ics_content)), 200
+
     
     createdDate = datetime.utcfromtimestamp(data['createdAt']).strftime("%b %d, %Y")
     

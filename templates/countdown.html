@@ -42,8 +42,11 @@
                 </form>
             </dialog>
             <div id="link-buttons">
-                <a id="calendar" href="https://calendar.google.com/calendar/u/0/r/eventedit?text=FuturePW&dates={{ iso }}/{{ iso }}&location={{ url }}" target="_blank" title="Open in Google Calendar">
+                <a href="data:text/calendar,{{ ics_content }}" title="Download iCalendar file" download="FuturePW.ics">
                     <i class="fa-solid fa-calendar"></i>
+                </a>
+                <a id="calendar" href="https://calendar.google.com/calendar/u/0/r/eventedit?text=FuturePW&dates={{ iso }}/{{ iso }}&location={{ url }}" target="_blank" title="Open in Google Calendar">
+                    <i class="fa-brands fa-google"></i>
                 </a>
                 <a id="qr" href="{{ url }}" onclick="document.getElementById('qr-dialog').showModal();return false;" title="Open in another device (Show QR)">
                     <i class="fa-solid fa-qrcode"></i>
