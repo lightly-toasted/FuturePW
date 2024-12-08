@@ -1,11 +1,11 @@
-[![FuturePW logo](static/android-chrome-192x192.png)](https://future-pw.vercel.app/)
+[![FuturePW logo](static/android-chrome-192x192.png)](https://future-pw.toast.name/)
 
 # FuturePW
 Send password to your future self.
 
 ## What is FuturePW?
 
-FuturePW is a web app that allows you to send password to your future self. It's like [pwpush.com](https://pwpush.com) or [FutureMe](https://www.futureme.org/), but for your password and your future self with guranteed return of your passwords. You can use FuturePW to soft-lock yourself from your SNS accounts, your phone, your computer and other things.
+FuturePW is a web app that allows you to send password to your future self. It's like [pwpush.com](https://pwpush.com) or [FutureMe](https://www.futureme.org/), but for your password and your future self with guranteed return of your passwords. You can use FuturePW to soft-lock your SNS accounts, your phone, your computer and other items you want to keep away.
 
 ## How to use
 
