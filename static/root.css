@@ -16,7 +16,7 @@ body {
 
 #content {
     width: 100%;
-    position: relative;
+    top: 0;
     z-index: 0;
     max-width: 100%;
     overflow-x: hidden;
@@ -39,9 +39,15 @@ body {
     z-index: -1;
 }
 
+#bottom {
+    min-height: 80vh;
+    background-color: white;
+}
+
 .footer {
-    height: 100vh;
-    background: white;
+    background-color: white;
+    height: 5em;
+    bottom: 0;
     display: flex;
     justify-content: center;
     align-items: center;

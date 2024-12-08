@@ -3,6 +3,7 @@
 {% block head %}
 <meta http-equiv="refresh" content="{{ remainingSeconds }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='countdown.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
 {% endblock %}
 
 {% block content %}
@@ -11,10 +12,56 @@
     <img src="{{ url_for('static', filename='flying.gif') }}" alt="✈️">
     <p id="countdown">{{ countdownText }}</p>
 </div>
+{% endblock %}
+
+{% block content_bottom %}
+<div>
+    <div id="scroll">
+        <i class="fa-solid fa-computer-mouse"></i>
+        <span>Scroll</span>
+    </div>
+    <div id="bottom-container">
+        <div id="save-link">
+            <span style="font-size: 1.5em;">Save your password link</span>
+            <div id="warning">
+                <span>⚠️ Warning</span>
+                <ul>
+                    <li>You can get your password back if you forget this link.</li>
+                    <li>Don't share this link with anyone!</li>
+                </ul>
+            </div>
+            <div id="link">
+                <span>{{ url }}</span>
+                <button><i class="fa-solid fa-copy"></i>Copy</button>
+            </div>
+            <dialog id="qr-dialog">
+                <p>Scan this QR code from another device</p>
+                <img loading="lazy" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ url }}&margin=5" alt="QR" />
+                <form method="dialog">
+                    <button>Close</button>
+                </form>
+            </dialog>
+            <div id="link-buttons">
+                <a id="calendar" href="https://calendar.google.com/calendar/u/0/r/eventedit?text=FuturePW&dates={{ iso }}/{{ iso }}&location={{ url }}" target="_blank" title="Open in Google Calendar">
+                    <i class="fa-solid fa-calendar"></i>
+                </a>
+                <a id="qr" href="#" onclick="document.getElementById('qr-dialog').showModal();return false;" title="Open in another device (Show QR)">
+                    <i class="fa-solid fa-qrcode"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="send-another">
+        <span>Send password to your future self.</span>
+        <a href="/">Send another</a>
+    </div>
+</div>
 
 <script>
     let remainingTime = parseInt(document.querySelector('meta[http-equiv="refresh"]').content);
     const countdownElement = document.getElementById('countdown');
+    const scrollDiv = document.getElementById('scroll');
+    const contentDiv = document.getElementById('content');
     const display = (remainingTime) => {
         const hours = Math.floor(remainingTime / 3600);
         const minutes = Math.floor((remainingTime % 3600) / 60);
@@ -29,5 +76,18 @@
         }
         display(remainingTime);
     }, 1000);
+
+    window.addEventListener('scroll', () => {
+        scrollDiv.style.opacity = Math.max(1 - window.scrollY / contentDiv.clientHeight * 2, 0);
+    })
+
+    document.getElementById('link').addEventListener('click', () => {
+        const link = document.getElementById('link').firstElementChild;
+        const range = document.createRange();
+        range.selectNode(link);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+    });
 </script>
 {% endblock %}

@@ -29,6 +29,11 @@
 
     <div>
         <img id="splitter" src="{{ url_for('static', filename='clouds-splitter.svg') }}" alt="🌫️">
+        <div id="bottom">
+            {% block content_bottom %}
+
+            {% endblock %}
+        </div>
         <div class="footer">
             <span class="footerText">Made with ❤️ by 🍞</span>
         </div>

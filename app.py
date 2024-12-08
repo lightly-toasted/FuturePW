@@ -64,7 +64,8 @@ def decrypt_route():
         hours, remainder = divmod(remainingSeconds, 3600)
         minutes, seconds = divmod(remainder, 60)
         countdownText = f"{hours:02}:{minutes:02}:{seconds:02}"
-        return render_template('countdown.html', remainingSeconds=remainingSeconds, countdownText=countdownText)
+        unlockAtISO = datetime.utcfromtimestamp(unlockAt).strftime('%Y%m%dT%H%M%SZ')
+        return render_template('countdown.html', remainingSeconds=remainingSeconds, countdownText=countdownText, iso=unlockAtISO, url=request.url)
     
     createdDate = datetime.utcfromtimestamp(data['createdAt']).strftime("%b %d, %Y")
     
