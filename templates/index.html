@@ -14,7 +14,7 @@
         <textarea name="content" id="message" placeholder="Enter secrets that you want to forget now and send to your future self.
 Anything is allowed such as your SNS account password, lock key location, your iPhone's passcode, etc. 
 
-Your secrets will not be saved anywhere, Only you (and whoever has link) can read them." style="font: inherit; border: none;" required></textarea>
+Your secrets will not be saved anywhere, Only you (and whoever has link) can read them." style="font: inherit; border: none;" maxlength="10000" required></textarea>
         <p style="font-family: 'Alex Brush', cursive; font-size: 1.2em;">You - on {{ today }}</p>
     </div>
     <div id="controls">
@@ -43,7 +43,6 @@ Your secrets will not be saved anywhere, Only you (and whoever has link) can rea
     
     document.querySelector('form').addEventListener('submit', async function(e) {
         e.preventDefault();
-        
 
         submit.disabled = true;
         controls.style.transform = "translateY(200%)";
