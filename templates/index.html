@@ -18,21 +18,24 @@ Your secrets will not be saved anywhere, Only you (and whoever has link) can rea
         <p style="font-family: 'Alex Brush', cursive; font-size: 1.2em;">You - on {{ today }}</p>
     </div>
     <div id="controls">
-        <span style="font-size: 2em;">
-            Receiver: You<br>
-            <span style="display: inline-block;">Deliver in</span>
-            <div style="display: inline-block; white-space: nowrap;">
-                <input type="number" name="timeNumber" id="timeNumber" min="1" max="9999" value="1" required>
-                <select name="timeUnit" id="timeUnit" required>
-                    <option value="years">years</option>
-                    <option value="weeks" selected>weeks</option>
-                    <option value="days">days</option>
-                    <option value="hours">hours</option>
-                    <option value="minutes">minutes</option>
-                </select>
-            </div>
-        </span>
-        <input id="submit" type="submit" value="Send">
+        <div id="time">
+            <span style="font-size: 2em;">
+                Receiver: You<br>
+                <span id="timeLabel" style="display: inline-block;">Deliver in</span>
+                <div style="display: inline-block; white-space: nowrap;">
+                    <input type="number" name="timeNumber" id="timeNumber" min="1" max="9999" value="1" required>
+                    <select name="timeUnit" id="timeUnit" required>
+                        <option value="years">years</option>
+                        <option value="weeks" selected>weeks</option>
+                        <option value="days">days</option>
+                        <option value="hours">hours</option>
+                        <option value="minutes">minutes</option>
+                    </select>
+                </div>
+            </span>
+            <input id="submit" type="submit" value="Send">
+        </div>
+        <span id="durationSwitchText" style="display: none;">Or choose a <button id="durationSwitch" type="button">date</button></span>
     </div>
 </form>
 
@@ -40,6 +43,12 @@ Your secrets will not be saved anywhere, Only you (and whoever has link) can rea
     const paper = document.getElementById('paper');
     const controls = document.getElementById('controls');
     const submit = document.getElementById('submit');
+    const durationSwitch = document.getElementById('durationSwitch');
+    const durationSwitchText = document.getElementById('durationSwitchText');
+    const timeNumber = document.getElementById('timeNumber');
+    const timeUnit = document.getElementById('timeUnit');
+    const timeLabel = document.getElementById('timeLabel');
+    let isDuration = true;
     
     document.querySelector('form').addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -50,7 +59,6 @@ Your secrets will not be saved anywhere, Only you (and whoever has link) can rea
         paper.style.pointerEvents = "none";
         controls.style.pointerEvents = "none";
         
-
         for (const child of paper.children) {
             child.style.opacity = "0";
         }
@@ -58,7 +66,6 @@ Your secrets will not be saved anywhere, Only you (and whoever has link) can rea
             child.style.opacity = "0";
         }
         
-
         await new Promise(resolve => setTimeout(resolve, 500));
 
         if (window.matchMedia("(max-width: 767px)").matches) {
@@ -74,6 +81,14 @@ Your secrets will not be saved anywhere, Only you (and whoever has link) can rea
         await new Promise(resolve => setTimeout(resolve, 1100));
 
         const formData = new FormData(this);
+        if (!isDuration) {
+            const date = new Date();
+            const selectedDate = new Date(formData.get('timeNumber'));
+            const minutes = (selectedDate.getTime() - date.getTime()) / 60000;
+            formData.set('timeNumber', String(minutes));
+            formData.set('timeUnit', 'minutes');
+        }
+
         const response = await fetch('/', {
             method: 'POST',
             body: formData,
@@ -82,6 +97,29 @@ Your secrets will not be saved anywhere, Only you (and whoever has link) can rea
         if (response.redirected) {
             window.location.href = response.url;
         }
+    });
+
+    durationSwitchText.style.display = "inline-block";
+    durationSwitch.addEventListener('click', () => {
+        if (isDuration) {
+            timeLabel.textContent = "Deliver on";
+            durationSwitch.textContent = "duration"
+            timeNumber.type = "datetime-local";
+            timeNumber.style.width = "20ch";
+            timeNumber.style.maxWidth = "80vw";
+            timeNumber.min = new Date().toISOString().slice(0, 16);
+            timeUnit.style.display = "none";
+        } else {
+            timeLabel.textContent = "Deliver in";
+            durationSwitch.textContent = "date"
+            timeNumber.type = "number";
+            timeNumber.style.width = "5.5em";
+            timeNumber.style.maxWidth = "40vw";
+            timeNumber.value = "1";
+            timeNumber.min = "1";
+            timeUnit.style.display = "inline-block";
+        }
+        isDuration = !isDuration;
     });
 </script>
 {% endblock %}

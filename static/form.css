@@ -48,7 +48,8 @@
     vertical-align: middle;
     font: inherit;
     color: var(--text-color);
-    max-width: 5.5em;
+    width: 5.5em;
+    max-width: 40vw;
     text-align: center;
     background: transparent;
 }
@@ -60,14 +61,17 @@
     background-color: white;
     padding: 1.5em;
     border-radius: 1em;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5em;
     align-items: center;
     justify-content: center;
     transition: transform 0.5s cubic-bezier(0.5, -0.5, 0.5, 1.5),
                 opacity 0.5s ease;
+}
 
+#time {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5em;
 }
 
 #controls > span {
@@ -85,4 +89,15 @@
     font-size: 1.5em;
     padding: 0.5em 2em;
     border-radius: 0.5em;
+    margin: 0.5em 0;
+}
+
+#durationSwitch {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    color: var(--text-color);
+    padding: 0;
+    text-decoration: underline;
 }
