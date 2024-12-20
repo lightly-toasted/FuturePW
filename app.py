@@ -1,8 +1,8 @@
-import os, json, base64, urllib.parse
+import os, json, base64, urllib.parse, datetime, hashlib
 from flask import Flask, render_template, request, redirect
 from dotenv import load_dotenv
 from cryptography.fernet import Fernet
-from datetime import datetime, timedelta, timezone
+from hashmoji import hashmoji
 
 load_dotenv()
 
@@ -15,8 +15,8 @@ if key is None:
 fernet = Fernet(key)
 
 def getTimestamp():
-    dt = datetime.now(timezone.utc)
-    utc_time = dt.replace(tzinfo=timezone.utc)
+    dt = datetime.datetime.now(datetime.timezone.utc)
+    utc_time = dt.replace(tzinfo=datetime.timezone.utc)
     return utc_time.timestamp()
 
 def encrypt(data):
@@ -26,6 +26,9 @@ def encrypt(data):
 def decrypt(data):
     encrypted_bytes = base64.urlsafe_b64decode(data)
     return json.loads(fernet.decrypt(encrypted_bytes).decode())
+
+def hashToEmoji(data):
+    return hashmoji(hashlib.md5(data.encode('utf-8')).digest())
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -37,8 +40,7 @@ def index():
         if timeUnit == 'years':
             timeNumber = 365.25 * timeNumber
             timeUnit = 'days'
-        timeDelta = timedelta(**{timeUnit: timeNumber})
-
+        timeDelta = datetime.timedelta(**{timeUnit: timeNumber})
 
         encrypted = encrypt({
             "content": content,
@@ -47,7 +49,11 @@ def index():
         })
 
         return redirect(f'/unlock?data={encrypted}', 303)
-    return render_template('index.html', timedelta=timedelta, today=datetime.now().strftime("%b %d, %Y"))
+    return render_template(
+        'index.html',
+        timedelta=datetime.timedelta,
+        today=datetime.datetime.now(datetime.timezone.utc).strftime("%b %d, %Y"),
+    )
 
 @app.route('/unlock')
 def decrypt_route():
@@ -63,7 +69,7 @@ def decrypt_route():
         hours, remainder = divmod(remainingSeconds, 3600)
         minutes, seconds = divmod(remainder, 60)
         countdownText = f"{hours:02}:{minutes:02}:{seconds:02}"
-        unlockAtISO = datetime.utcfromtimestamp(unlockAt).strftime('%Y%m%dT%H%M%SZ')
+        unlockAtISO = datetime.datetime.fromtimestamp(unlockAt, datetime.UTC).strftime('%Y%m%dT%H%M%SZ')
         ics_content = f"""BEGIN:VCALENDAR\r
 VERSION:2.0\r
 PRODID:-//FuturePW//NONSGML v1.0//EN\r
@@ -76,10 +82,17 @@ DESCRIPTION:FuturePW\r
 STATUS:CONFIRMED\r
 END:VEVENT\r
 END:VCALENDAR\r"""
-        return render_template('countdown.html', remainingSeconds=remainingSeconds, countdownText=countdownText, iso=unlockAtISO, url=request.url, ics_content=urllib.parse.quote_plus(ics_content)), 200
-
+        return render_template(
+            'countdown.html',
+            remainingSeconds=remainingSeconds,
+            countdownText=countdownText,
+            iso=unlockAtISO,
+            url=request.url,
+            ics_content=urllib.parse.quote_plus(ics_content),
+            hash=hashToEmoji(encrypted)
+        )
     
-    createdDate = datetime.utcfromtimestamp(data['createdAt']).strftime("%b %d, %Y")
+    createdDate = datetime.datetime.fromtimestamp(data['createdAt'], datetime.UTC).strftime("%b %d, %Y")
     
     return render_template('decrypt.html', createdAt=createdDate, content=data['content'])
 

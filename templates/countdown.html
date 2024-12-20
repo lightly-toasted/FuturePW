@@ -2,6 +2,7 @@
 
 {% block head %}
 <meta http-equiv="refresh" content="{{ remainingSeconds }}">
+<meta name="unlockAt" content="{{ iso }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='countdown.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
 {% endblock %}
@@ -11,6 +12,7 @@
     <h1>Arriving to your future self</h1>
     <img src="{{ url_for('static', filename='flying.gif') }}" alt="✈️">
     <p id="countdown">{{ countdownText }}</p>
+    <div id="hash">{{ hash }}</div>
 </div>
 {% endblock %}
 
@@ -51,6 +53,9 @@
                 <a id="qr" href="{{ url }}" onclick="document.getElementById('qr-dialog').showModal();return false;" title="Open in another device (Show QR)">
                     <i class="fa-solid fa-qrcode"></i>
                 </a>
+                <a id="pwa" href="{{ url }}" title="Install as PWA (offline)" style="display: none;">
+                    <i class="fa-solid fa-mobile"></i>
+                </a>
             </div>
         </div>
     </div>
@@ -60,37 +65,5 @@
     </div>
 </div>
 
-<script>
-    let remainingTime = parseInt(document.querySelector('meta[http-equiv="refresh"]').content);
-    const countdownElement = document.getElementById('countdown');
-    const scrollDiv = document.getElementById('scroll');
-    const contentDiv = document.getElementById('content');
-    const display = (remainingTime) => {
-        const hours = Math.floor(remainingTime / 3600);
-        const minutes = Math.floor((remainingTime % 3600) / 60);
-        const seconds = remainingTime % 60;
-        countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    };
-    display(remainingTime);
-    const intervalId = setInterval(() => {
-        remainingTime -= 1;
-        if (remainingTime <= 0) {
-            clearInterval(intervalId);
-        }
-        display(remainingTime);
-    }, 1000);
-
-    window.addEventListener('scroll', () => {
-        scrollDiv.style.opacity = Math.max(1 - window.scrollY / contentDiv.clientHeight * 2, 0);
-    })
-
-    document.getElementById('link').addEventListener('click', () => {
-        const link = document.getElementById('link').firstElementChild;
-        const range = document.createRange();
-        range.selectNode(link);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-        document.execCommand('copy');
-    });
-</script>
+<script src="{{ url_for('static', filename='countdown.js') }}"></script>
 {% endblock %}

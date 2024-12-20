@@ -3,7 +3,7 @@
     aspect-ratio: 268/359;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 80px;
+    margin-top: 20px;
     margin-bottom: 64px;
     max-width: 60vw;
     background: white;
@@ -102,4 +102,55 @@
     color: var(--text-color);
     padding: 0;
     text-decoration: underline;
+}
+
+#recent {
+    display: flex;
+    flex-direction: row;
+    z-index: -1;
+    margin-top: 20px;
+    min-height: 40px;
+}
+
+.recent-paper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 6em;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    margin-left: 2em;
+    transition: transform 1s ease;
+}
+
+.recent-paper img {
+    width: 100%;
+}
+
+.recent-paper p {
+    font-size: 0.5em;
+    margin: 0;
+}
+
+@keyframes blink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+}
+
+.recent-paper span {
+    color: #d1f8ff;
+    transition: opacity 0.5s ease;
+}
+
+.recent-paper.arrived span {
+    animation: blink 1s infinite;
 }

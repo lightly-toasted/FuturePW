@@ -37,6 +37,7 @@ body {
     position: relative;
     margin-top: -50vh;
     z-index: -1;
+    user-select: none;
 }
 
 #bottom {
@@ -60,5 +61,32 @@ body {
 }
 
 .footerText {
+    text-align: center;
+}
+
+#send-another {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+    margin-top: 16em;
+    margin-bottom: 2em;
+    font-size: 2em;
+}
+
+@media (min-width: 1200px) {
+    #send-another {
+        flex-direction: row;
+        gap: 1em;
+    }
+}
+
+#send-another a {
+    text-decoration: none;
+    color: white;
+    background-color: var(--text-color);
+    border-radius: 0.5em;
+    padding: 0.5em;
     text-align: center;
 }

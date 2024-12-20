@@ -6,7 +6,7 @@
 
 {% block content %}
 <form method="post">
-    <div id="paper">
+    <div id="paper" style="margin-top: 64px;">
         <h1 style="font-size: 24px; display: inline; vertical-align: middle;">FuturePW</h1>
         <img src="{{ url_for('static', filename='icon.svg') }}" alt="FuturePW" width="32" height="32" style="vertical-align: middle; color: var(--text-color); margin-left: -0.25em;">
         <span style="float: right;">{{ createdAt }}</span>
@@ -18,4 +18,9 @@
         <p style="font-family: 'Alex Brush', cursive; font-size: 1.2em;">You - on {{ createdAt }}</p>
     </div>
 </form>
+
+<div id="send-another">
+    <span>Send password to your future self.</span>
+    <a href="/">Send another</a>
+</div>
 {% endblock %}
