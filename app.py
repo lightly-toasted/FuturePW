@@ -1,5 +1,5 @@
 import os, json, base64, urllib.parse, datetime, hashlib
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash, get_flashed_messages
 from dotenv import load_dotenv
 from cryptography.fernet import Fernet
 from hashmoji import hashmoji
@@ -7,23 +7,33 @@ from hashmoji import hashmoji
 load_dotenv()
 
 app = Flask(__name__, static_folder='static', template_folder='templates', static_url_path='/')
-key = os.environ.get('ENCRYPTION_KEY')
+app.config['SECRET_KEY'] = os.environ.get('ENCRYPTION_KEY')
+encryptionKey = os.environ.get('ENCRYPTION_KEY')
 
-if key is None:
+if encryptionKey is None:
     raise ValueError("ENCRYPTION_KEY environment variable is not set")
-
-fernet = Fernet(key)
 
 def getTimestamp():
     dt = datetime.datetime.now(datetime.timezone.utc)
     utc_time = dt.replace(tzinfo=datetime.timezone.utc)
     return utc_time.timestamp()
 
-def encrypt(data):
+def generateFernetKey(input):
+    hash_object = hashlib.sha256(input.encode('utf-8'))
+    key = hash_object.digest()[:32]
+    return base64.urlsafe_b64encode(key)
+
+def encrypt(data, key=None):
+    if key is None:
+        key = encryptionKey
+    fernet = Fernet(key)
     encrypted_bytes = fernet.encrypt(json.dumps(data).encode())
     return base64.urlsafe_b64encode(encrypted_bytes).decode('utf-8')
 
-def decrypt(data):
+def decrypt(data, key=None):
+    if key is None:
+        key = encryptionKey
+    fernet = Fernet(key)
     encrypted_bytes = base64.urlsafe_b64decode(data)
     return json.loads(fernet.decrypt(encrypted_bytes).decode())
 
@@ -42,11 +52,17 @@ def index():
             timeUnit = 'days'
         timeDelta = datetime.timedelta(**{timeUnit: timeNumber})
 
-        encrypted = encrypt({
+        data = {
             "content": content,
             "createdAt": currentTimestamp,
             "duration": timeDelta.total_seconds(),
-        })
+        }
+
+        if 'pin' in request.form:
+            data['content'] = encrypt(content, generateFernetKey(request.form['pin']))
+            data['secured'] = True
+
+        encrypted = encrypt(data)
 
         return redirect(f'/unlock?data={encrypted}', 303)
     return render_template(
@@ -55,13 +71,22 @@ def index():
         today=datetime.datetime.now(datetime.timezone.utc).strftime("%b %d, %Y"),
     )
 
-@app.route('/unlock')
+@app.route('/unlock', methods=['GET', 'POST'])
 def decrypt_route():
     encrypted = request.args.get('data')
     try:
         data = decrypt(encrypted)
     except:
         return "Error: invalid data", 400
+    if data.get('secured', False):
+        if request.method == 'POST' and 'pin' in request.form:
+            try:
+                data['content'] = decrypt(data['content'], generateFernetKey(request.form['pin']))
+                data.pop('secured', None)
+            except:
+                flash("Invalid PIN")
+        if 'secured' in data:
+            return render_template('secured.html')
     unlockAt = data['createdAt'] + data['duration']
     currentTimestamp = getTimestamp()
     if currentTimestamp < unlockAt:

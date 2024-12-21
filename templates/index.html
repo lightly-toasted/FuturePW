@@ -33,11 +33,17 @@ Your secrets will not be saved anywhere, Only you (and whoever has link) can rea
                         <option value="hours">hours</option>
                         <option value="minutes">minutes</option>
                     </select>
-                </div>
+                </div><br>
+                <span id="durationSwitchText">or choose a <button id="durationSwitch" type="button">date</button></span>
             </span>
-            <input id="submit" type="submit" value="Send">
+            <div style="display: flex; flex-direction: column;">
+                <input id="submit" type="submit" value="Send">
+                <div>
+                    <label for="pin" style="margin-right: 0.5em;">🔒</label>
+                    <input type="password" name="pin" id="pin" title="You must remember this PIN to unlock your message." placeholder="PIN (optional)" style="width: 8em; margin-right: 0.5em;">
+                </div>
+            </div>
         </div>
-        <span id="durationSwitchText" style="display: none;">Or choose a <button id="durationSwitch" type="button">date</button></span>
     </div>
 </form>
 

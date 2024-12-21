@@ -83,12 +83,10 @@ durationSwitch.addEventListener('click', () => {
 const papers = { ...localStorage };
 const recentDiv = document.getElementById('recent');
 let alertShown = false;
-console.log(papers);
 for (const [hash, data] of Object.entries(papers)) {
     try {
         const parsed = JSON.parse(data);
         let remainingTime = Math.max(0, Math.round((new Date(parsed.time) - new Date()) / 1000));
-        console.log(remainingTime)
         const paper = document.createElement('a')
         paper.classList.add('recent-paper');
         paper.style.transform = `translate(${Math.random() * 20 - 10}px, ${Math.random() * 50 - 20}px)`;
@@ -142,6 +140,13 @@ for (const [hash, data] of Object.entries(papers)) {
         console.error(error);
     }
 }
+
+const pinLabel = document.querySelector('label[for="pin"]');
+const pin = document.getElementById('pin');
+pin.addEventListener('input', () => {
+    pinLabel.textContent = pin.value ? "🔒" : "🔓";
+});
+pinLabel.textContent = "🔓";
 
 const image = new Image();
 image.src = '/send.gif';
