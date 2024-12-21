@@ -78,15 +78,6 @@ def decrypt_route():
         data = decrypt(encrypted)
     except:
         return "Error: invalid data", 400
-    if data.get('secured', False):
-        if request.method == 'POST' and 'pin' in request.form:
-            try:
-                data['content'] = decrypt(data['content'], generateFernetKey(request.form['pin']))
-                data.pop('secured', None)
-            except:
-                flash("Invalid PIN")
-        if 'secured' in data:
-            return render_template('secured.html')
     unlockAt = data['createdAt'] + data['duration']
     currentTimestamp = getTimestamp()
     if currentTimestamp < unlockAt:
@@ -118,6 +109,16 @@ END:VCALENDAR\r"""
         )
     
     createdDate = datetime.datetime.fromtimestamp(data['createdAt'], datetime.UTC).strftime("%b %d, %Y")
+
+    if data.get('secured', False):
+        if request.method == 'POST' and 'pin' in request.form:
+            try:
+                data['content'] = decrypt(data['content'], generateFernetKey(request.form['pin']))
+                data.pop('secured', None)
+            except:
+                flash("Invalid PIN")
+        if 'secured' in data:
+            return render_template('secured.html')
     
     return render_template('decrypt.html', createdAt=createdDate, content=data['content'])
 
