@@ -6,6 +6,8 @@ const durationSwitchText = document.getElementById('durationSwitchText');
 const timeNumber = document.getElementById('timeNumber');
 const timeUnit = document.getElementById('timeUnit');
 const timeLabel = document.getElementById('timeLabel');
+const pinLabel = document.querySelector('label[for="pin"]');
+const pin = document.getElementById('pin');
 let isDuration = true;
 
 document.querySelector('form').addEventListener('submit', async function(e) {
@@ -115,10 +117,14 @@ for (const [hash, data] of Object.entries(papers)) {
             countdown.style.opacity = "0";
             localStorage.removeItem(hash);
             paper.style.display = "absolute";
-            paper.style.transform = `rotate(-70deg) translate(20vw, 10vh)`;
+            if (window.matchMedia("(max-width: 767px)").matches) {
+                paper.style.transform = `rotate(-20deg) translate(100vw, 0)`;
+            } else {
+                paper.style.transform = `rotate(-70deg) translate(20vw, 10vh)`;
+            }
             setTimeout(() => {
                 recentDiv.removeChild(paper);
-            }, 2000);
+            }, 1000);
         });
 
         const display = (remainingTime) => {
@@ -141,8 +147,6 @@ for (const [hash, data] of Object.entries(papers)) {
     }
 }
 
-const pinLabel = document.querySelector('label[for="pin"]');
-const pin = document.getElementById('pin');
 pin.addEventListener('input', () => {
     pinLabel.textContent = pin.value ? "🔒" : "🔓";
 });
