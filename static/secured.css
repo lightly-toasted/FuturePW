@@ -1,3 +1,6 @@
+body {
+    overflow: hidden;
+}
 
 h3 {
     margin: 0;
@@ -6,13 +9,18 @@ h3 {
 
 #paper {
     filter: blur(5px);
+    user-select: none;
+    margin-bottom: 50vh;
 }
 
-#pin-container {
-    position: absolute;
-    top: 50%;
-    left: 50%; 
-    transform: translate(-50%, -50%);
+dialog {
+    margin: 0; /* Remove default margins */
+    padding: 20px; /* Optional: add some padding inside the dialog */
+    border-radius: 10px; /* Optional: add rounded corners */
+    position: fixed; /* Fix it to the screen */
+    top: 50%; /* Position 50% from the top */
+    left: 50%; /* Position 50% from the left */
+    transform: translate(-50%, -50%); /* Adjust for exact centering */
     text-align: center;
     z-index: 1;
     background-color: white;
