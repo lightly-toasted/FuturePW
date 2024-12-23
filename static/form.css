@@ -20,8 +20,12 @@
     mask-repeat: no-repeat;
     -webkit-mask-position: center;
     mask-position: center;
-    transition: all 0.5s ease,
+    transition: filter 0.5s ease,
                 transform 2s cubic-bezier(0.5, -0.5, 0.5, 1.5);
+}
+
+#paper * {
+    transition: opacity 0.2s ease;
 }
 
 @media (min-width: 1000px) {

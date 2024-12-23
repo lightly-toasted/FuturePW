@@ -22,11 +22,8 @@ document.querySelector('form').addEventListener('submit', async function(e) {
     for (const child of paper.children) {
         child.style.opacity = "0";
     }
-    for (const child of paper.children) {
-        child.style.opacity = "0";
-    }
     
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 200));
 
     if (window.matchMedia("(max-width: 767px)").matches) {
         paper.style.filter = "none";
@@ -38,7 +35,7 @@ document.querySelector('form').addEventListener('submit', async function(e) {
 
     paper.style.transform = `translate(200%, -200%)`;
 
-    await new Promise(resolve => setTimeout(resolve, 1100));
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     const formData = new FormData(this);
     if (!isDuration) {
