@@ -9,9 +9,11 @@
 
 <form method="post">
     <div id="paper">
-        <h1 style="font-size: 24px; display: inline; vertical-align: middle;">FuturePW</h1>
-        <img src="{{ url_for('static', filename='icon.svg') }}" alt="FuturePW" width="32" height="32" style="vertical-align: middle; color: red; margin-left: -0.25em;">
-        <span style="float: right;">{{ today }}</span>
+        <div>
+            <h1 style="font-size: 24px; display: inline; vertical-align: middle;">FuturePW</h1>
+            <img src="{{ url_for('static', filename='icon.svg') }}" alt="FuturePW" width="32" height="32" style="vertical-align: middle; color: red; margin-left: -0.25em;">
+            <span style="float: right;">{{ today }}</span>
+        </div>
 
         <textarea name="content" id="message" placeholder="Enter secrets that you want to forget now and send to your future self.
 Anything is allowed such as your SNS account password, lock key location, your iPhone's passcode, etc. 
