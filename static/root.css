@@ -90,3 +90,7 @@ body {
     padding: 0.5em;
     text-align: center;
 }
+
+svg {
+    width: 1em;
+}

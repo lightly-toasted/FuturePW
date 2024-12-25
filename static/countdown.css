@@ -180,8 +180,9 @@ h1 {
     height: 1.2em;
 }
 
-#link-buttons a i {
-    font-size: 1em;
+#link-buttons a svg {
+    width: 100%;
+    height: 100%;
 }
 
 #qr-dialog {
