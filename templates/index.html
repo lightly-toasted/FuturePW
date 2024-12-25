@@ -11,7 +11,7 @@
     <div id="paper">
         <div>
             <h1 style="font-size: 24px; display: inline; vertical-align: middle;">FuturePW</h1>
-            <img src="{{ url_for('static', filename='icon.svg') }}" alt="FuturePW" width="32" height="32" style="vertical-align: middle; color: red; margin-left: -0.25em;">
+            <img src="{{ url_for('static', filename='icon.svg') }}" alt="FuturePW" width="32" height="32" style="vertical-align: middle; margin-left: -0.25em;">
             <span style="float: right;">{{ today }}</span>
         </div>
 
@@ -19,7 +19,11 @@
 Anything is allowed such as your SNS account password, lock key location, your iPhone's passcode, etc. 
 
 Your secrets will not be saved anywhere, Only you (and whoever has link) can read them." style="font: inherit; border: none;" maxlength="10000" required></textarea>
-        <p style="font-family: 'Alex Brush', cursive; font-size: 1.2em;">You - on {{ today }}</p>
+
+        <div style="margin-top: 1em;">
+            <span style="font-family: 'Alex Brush', cursive; font-size: 1.2em;">You - on {{ today }}</span>
+            <button id="generate" title="Generate random password"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="m120 100c0 11.046875-8.953125 20-20 20s-20-8.953125-20-20 8.953125-20 20-20 20 8.953125 20 20zm116 116c-11.046875 0-20 8.953125-20 20s8.953125 20 20 20 20-8.953125 20-20-8.953125-20-20-20zm0-136c-11.046875 0-20 8.953125-20 20s8.953125 20 20 20 20-8.953125 20-20-8.953125-20-20-20zm-136 136c-11.046875 0-20 8.953125-20 20s8.953125 20 20 20 20-8.953125 20-20-8.953125-20-20-20zm372 116v-76c0-22.054688-17.945312-40-40-40h-96v40c0 44.113281-35.886719 80-80 80h-40v96c0 22.054688 17.945312 40 40 40h176c22.054688 0 40-17.945312 40-40 0-11.046875 8.953125-20 20-20s20 8.953125 20 20c0 44.113281-35.886719 80-80 80h-176c-44.113281 0-80-35.886719-80-80v-96h-96c-44.113281 0-80-35.886719-80-80v-176c0-44.113281 35.886719-80 80-80h176c44.113281 0 80 35.886719 80 80v96h96c44.113281 0 80 35.886719 80 80v76c0 11.046875-8.953125 20-20 20s-20-8.953125-20-20zm-176-252c0-22.054688-17.945312-40-40-40h-176c-22.054688 0-40 17.945312-40 40v176c0 22.054688 17.945312 40 40 40h176c22.054688 0 40-17.945312 40-40zm30 264c0 11.046875 8.953125 20 20 20s20-8.953125 20-20-8.953125-20-20-20-20 8.953125-20 20zm86-88c-11.046875 0-20 8.953125-20 20s8.953125 20 20 20 20-8.953125 20-20-8.953125-20-20-20zm-156 156c0 11.046875 8.953125 20 20 20s20-8.953125 20-20-8.953125-20-20-20-20 8.953125-20 20zm156-20c-11.046875 0-20 8.953125-20 20s8.953125 20 20 20 20-8.953125 20-20-8.953125-20-20-20zm0 0"/></svg></button>
+        </div>
     </div>
     <div id="controls">
         <div id="time">

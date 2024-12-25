@@ -1,4 +1,5 @@
 const paper = document.getElementById('paper');
+const message = document.getElementById('message');
 const controls = document.getElementById('controls');
 const submit = document.getElementById('submit');
 const durationSwitch = document.getElementById('durationSwitch');
@@ -8,6 +9,7 @@ const timeUnit = document.getElementById('timeUnit');
 const timeLabel = document.getElementById('timeLabel');
 const pinLabel = document.querySelector('label[for="pin"]');
 const pin = document.getElementById('pin');
+const generateButton = document.getElementById('generate');
 let isDuration = true;
 
 document.querySelector('form').addEventListener('submit', async function(e) {
@@ -148,6 +150,21 @@ pin.addEventListener('input', () => {
     pinLabel.textContent = pin.value ? "🔒" : "🔓";
 });
 pinLabel.textContent = "🔓";
+
+generateButton.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?';
+    const length = 16;
+    let password = '';
+    
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        password += characters[randomIndex];
+    }
+
+    message.value += message.value.endsWith(' ') ? '' : ' ' + password;
+});
 
 const image = new Image();
 image.src = '/send.gif';

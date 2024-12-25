@@ -44,6 +44,7 @@
     overflow-wrap: break-word;
     white-space: normal;
     overflow-y: auto;
+    color: var(--text-color);
 }
 
 #timeNumber, #timeUnit {
@@ -169,4 +170,15 @@
 
 .recent-paper.arrived span {
     animation: blink 1s infinite;
+}
+
+#generate {
+    margin: 0;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 2em;
+    float: right;
+    vertical-align: middle;
+    cursor: pointer;
 }
