@@ -151,6 +151,7 @@ pin.addEventListener('input', () => {
 });
 pinLabel.textContent = "🔓";
 
+generateButton.hidden = false;
 generateButton.addEventListener('click', (e) => {
     e.preventDefault();
 
@@ -163,7 +164,8 @@ generateButton.addEventListener('click', (e) => {
         password += characters[randomIndex];
     }
 
-    message.value += message.value.endsWith(' ') ? '' : ' ' + password;
+    message.value += message.value.endsWith(' ') ? password : ' ' + password;
+
 });
 
 const image = new Image();
